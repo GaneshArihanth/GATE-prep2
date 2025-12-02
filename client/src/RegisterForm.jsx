@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
+import config from './config';
 import "./Register.css";
 
 const RegisterForm = () => {
@@ -39,7 +40,7 @@ const RegisterForm = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
+      const response = await fetch(`${config.API_URL}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -70,81 +71,81 @@ const RegisterForm = () => {
       <div className="register-box">
         <h2>Register</h2>
         <form className="register-form" onSubmit={handleSubmit}>
-          
+
           {/* User Role Selection */}
-                    <div 
-                      className={`role-dropdown-container ${isDropdownOpen ? "expanded" : ""}`} 
-                    >
-                      <label className="role-label">
-                        <FaUser className="icon" /> Select Role:
-                        <select 
-                          value={userType} 
-                          onChange={(e) => setUserType(e.target.value)} 
-                          onFocus={() => handleDropdownToggle(true)}
-                          onBlur={() => handleDropdownToggle(false)}
-                          className="role-dropdown"
-                        >
-                          <option value="student">Student</option>
-                          <option value="teacher">Teacher</option>
-                        </select>
-                      </label>
-                    </div>
+          <div
+            className={`role-dropdown-container ${isDropdownOpen ? "expanded" : ""}`}
+          >
+            <label className="role-label">
+              <FaUser className="icon" /> Select Role:
+              <select
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
+                onFocus={() => handleDropdownToggle(true)}
+                onBlur={() => handleDropdownToggle(false)}
+                className="role-dropdown"
+              >
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+              </select>
+            </label>
+          </div>
 
           {/* Name Field */}
           <div className="input-group">
             <FaUser className="icon" />
-            <input 
-              type="text" 
-              name="name" 
-              placeholder="Full Name" 
-              value={formData.name} 
-              onChange={handleChange} 
-              required 
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
             />
           </div>
 
           {/* Profile Name Field */}
           <div className="input-group">
             <FaUser className="icon" />
-              <input 
-                type="text" 
-                name="profileName" 
-                placeholder="User Name" 
-                value={formData.profileName} 
-                onChange={handleChange} 
-                autoComplete="off"
-                required 
-              />
+            <input
+              type="text"
+              name="profileName"
+              placeholder="User Name"
+              value={formData.profileName}
+              onChange={handleChange}
+              autoComplete="off"
+              required
+            />
           </div>
 
           {/* Email Field */}
           <div className="input-group">
             <FaEnvelope className="icon" />
-            <input 
-              type="email" 
-              name="email" 
-              placeholder="Email Address" 
-              value={formData.email} 
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
               onChange={handleChange}
-              autoComplete="off" 
-              required 
+              autoComplete="off"
+              required
             />
           </div>
 
           {/* Password Field */}
           <div className="input-group">
             <FaLock className="icon" />
-            <input 
-              type={showPassword ? "text" : "password"} 
-              name="password" 
-              placeholder="Password" 
-              value={formData.password} 
-              onChange={handleChange} 
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
               autoComplete="off"
-              required 
+              required
             />
-            <span 
-              className="toggle-password" 
+            <span
+              className="toggle-password"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? "👁️" : "🔒"}

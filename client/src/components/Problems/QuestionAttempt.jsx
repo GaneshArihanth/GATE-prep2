@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import config from '../../config';
 import './QuestionAttempt.css';
 
 const QuestionAttempt = ({ question, onClose, onSubmit }) => {
@@ -99,7 +100,7 @@ const QuestionAttempt = ({ question, onClose, onSubmit }) => {
 
       // Save to backend
       try {
-        const response = await fetch('http://localhost:5000/api/problems/attempt', {
+        const response = await fetch(`${config.API_URL}/api/problems/attempt`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import DiscussionCard from './components/Discussion/DiscussionCard';
+import config from './config';
 import './Discuss.css';
 
 const Discuss = () => {
@@ -38,7 +39,7 @@ const Discuss = () => {
   const fetchDiscussions = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/discussions');
+      const response = await fetch(`${config.API_URL}/api/discussions`);
       const data = await response.json();
 
       if (data.success) {
@@ -68,7 +69,7 @@ const Discuss = () => {
       setLoading(true);
       const userId = localStorage.getItem('userId') || 'demo-user';
 
-      const response = await fetch('http://localhost:5000/api/discussions', {
+      const response = await fetch(`${config.API_URL}/api/discussions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -130,7 +131,7 @@ const Discuss = () => {
           <h1>{showAIChat ? 'AI Assistant' : 'Community Discussions'}</h1>
           <p>{showAIChat ? 'Get instant help from our AI tutor (Mock)' : 'Share your doubts and help others learn'}</p>
         </div>
-        <button 
+        <button
           className={`toggle-btn ${showAIChat ? 'ai-active' : ''}`}
           onClick={() => setShowAIChat(!showAIChat)}
         >

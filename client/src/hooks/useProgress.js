@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import config from '../config';
 
 // Mock data generator
 const generateMockProblems = () => {
@@ -85,7 +86,7 @@ const useProgress = () => {
 
       console.log('Fetching problems from API...');
       // Fetch problems from backend API
-      const problemsResponse = await fetch('http://localhost:5000/api/problems');
+      const problemsResponse = await fetch(`${config.API_URL}/api/problems`);
 
       if (!problemsResponse.ok) {
         throw new Error(`API returned ${problemsResponse.status}`);
@@ -96,7 +97,7 @@ const useProgress = () => {
 
       // Fetch user progress from backend API
       console.log(`Fetching progress for user: ${userId}`);
-      const progressResponse = await fetch(`http://localhost:5000/api/progress/${userId}`);
+      const progressResponse = await fetch(`${config.API_URL}/api/progress/${userId}`);
       const progressData = await progressResponse.json();
       console.log('Progress API response:', progressData);
 

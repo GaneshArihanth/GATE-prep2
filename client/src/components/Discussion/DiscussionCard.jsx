@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaHeart, FaRegHeart, FaTrash } from 'react-icons/fa';
+import config from '../../config';
 import './Discussion.css';
 
 const DiscussionCard = ({ discussion, onReplyAdded }) => {
@@ -32,7 +33,7 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
 
   const checkLikeStatus = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/discussions/like-status?userId=${userId}&discussionId=${discussion.id}`);
+      const response = await fetch(`${config.API_URL}/api/discussions/like-status?userId=${userId}&discussionId=${discussion.id}`);
       const data = await response.json();
       if (data.success) {
         setIsLiked(data.liked);
@@ -44,7 +45,7 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
 
   const handleLike = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/discussions/like', {
+      const response = await fetch(`${config.API_URL}/api/discussions/like`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -66,7 +67,7 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
 
   const handleReplyLike = async (replyId) => {
     try {
-      const response = await fetch('http://localhost:5000/api/discussions/like', {
+      const response = await fetch(`${config.API_URL}/api/discussions/like`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -82,8 +83,8 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
           [replyId]: data.liked
         }));
         // Update reply likes count in state
-        setReplies(prevReplies => prevReplies.map(reply => 
-          reply.id === replyId 
+        setReplies(prevReplies => prevReplies.map(reply =>
+          reply.id === replyId
             ? { ...reply, likesCount: (reply.likesCount || 0) + (data.liked ? 1 : -1) }
             : reply
         ));
@@ -97,7 +98,7 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
   const fetchReplies = async () => {
     try {
       setLoadingReplies(true);
-      const response = await fetch(`http://localhost:5000/api/discussions/${discussion.id}?userId=${userId}`);
+      const response = await fetch(`${config.API_URL}/api/discussions/${discussion.id}?userId=${userId}`);
       const data = await response.json();
 
       if (data.success) {
@@ -118,7 +119,7 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
 
     try {
       setIsSubmitting(true);
-      const response = await fetch(`http://localhost:5000/api/discussions/${discussion.id}/replies`, {
+      const response = await fetch(`${config.API_URL}/api/discussions/${discussion.id}/replies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -136,10 +137,10 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
         setReplyContent('');
         setShowReplyForm(false);
         setError(null);
-        
+
         // Refresh replies
         await fetchReplies();
-        
+
         if (onReplyAdded) onReplyAdded();
       } else {
         toast.error(data.message || 'Failed to add reply');
@@ -161,7 +162,7 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
 
     try {
       setIsDeleting(true);
-      const response = await fetch(`http://localhost:5000/api/discussions/${discussion.id}`, {
+      const response = await fetch(`${config.API_URL}/api/discussions/${discussion.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -191,7 +192,7 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/discussions/${discussion.id}/replies/${replyId}`, {
+      const response = await fetch(`${config.API_URL}/api/discussions/${discussion.id}/replies/${replyId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -220,8 +221,8 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
         <div className="discussion-title-section">
           <h3>{discussion.title}</h3>
           {isAdmin && (
-            <button 
-              className="delete-button" 
+            <button
+              className="delete-button"
               onClick={handleDeleteDiscussion}
               disabled={isDeleting}
               title="Delete discussion"
@@ -244,8 +245,8 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
         {discussion.viewsCount > 0 && (
           <span className="views-badge">{discussion.viewsCount} Views</span>
         )}
-        <button 
-          className="like-button" 
+        <button
+          className="like-button"
           onClick={handleLike}
           title={isLiked ? 'Unlike' : 'Like'}
         >
@@ -265,8 +266,8 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
                 <div className="reply-header">
                   <p className="reply-content">{reply.content}</p>
                   {isAdmin && (
-                    <button 
-                      className="delete-button delete-reply-btn" 
+                    <button
+                      className="delete-button delete-reply-btn"
                       onClick={() => handleDeleteReply(reply.id)}
                       title="Delete reply"
                     >
@@ -282,8 +283,8 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
                   {reply.isAcceptedAnswer && (
                     <span className="accepted-badge">✓ Accepted Answer</span>
                   )}
-                  <button 
-                    className="like-button reply-like" 
+                  <button
+                    className="like-button reply-like"
                     onClick={() => handleReplyLike(reply.id)}
                     title={replyLikes[reply.id] ? 'Unlike' : 'Like'}
                   >
@@ -311,9 +312,9 @@ const DiscussionCard = ({ discussion, onReplyAdded }) => {
               required
             />
             <div className="reply-actions">
-              <button 
-                type="button" 
-                className="submit-btn" 
+              <button
+                type="button"
+                className="submit-btn"
                 onClick={handleReply}
                 disabled={isSubmitting}
               >

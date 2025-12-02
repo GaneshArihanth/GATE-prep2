@@ -85,7 +85,7 @@ BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ language 'plpgsql' SET search_path = public;
 
 CREATE TRIGGER update_problems_updated_at 
 BEFORE UPDATE ON public.problems
@@ -237,7 +237,7 @@ BEGIN
     END IF;
     RETURN NULL;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- Trigger for reply count
 CREATE TRIGGER trigger_update_reply_count
@@ -276,7 +276,7 @@ BEGIN
     END IF;
     RETURN NULL;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- Trigger for likes count
 CREATE TRIGGER trigger_update_likes_count
@@ -293,7 +293,7 @@ BEGIN
     WHERE id = NEW.discussion_id;
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- Trigger for view count
 CREATE TRIGGER trigger_increment_views
@@ -398,7 +398,7 @@ BEGIN
     
     RETURN OLD;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- Trigger to enforce admin-only deletion for discussions
 CREATE TRIGGER enforce_admin_delete_discussion
@@ -424,7 +424,7 @@ BEGIN
     
     RETURN OLD;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- Trigger to enforce admin-only deletion for replies
 CREATE TRIGGER enforce_admin_delete_reply
@@ -484,7 +484,7 @@ EXCEPTION
         );
         RETURN result;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- Function to soft delete reply (admin only)
 CREATE OR REPLACE FUNCTION soft_delete_reply(
@@ -526,5 +526,5 @@ EXCEPTION
         );
         RETURN result;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = public;
 
